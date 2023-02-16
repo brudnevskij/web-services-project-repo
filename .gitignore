@@ -5,6 +5,7 @@ authentication-service/authApp
 logger-service/loggerServiceApp
 mail-service/mailApp
 listener-service/listenerApp
+front-end/frontEndApp
 
 #folder with mounted DBs data
 project/db-data/
