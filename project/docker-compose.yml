@@ -62,6 +62,17 @@ services:
       MAIL_NAME: "John Smith"
       MAIL_ADDRESS: "john.smith@example.com"
 
+  camera-service:
+    build:
+      context: ./../camera-service
+      dockerfile: ./camera-service.dockerfile
+    restart: always
+    ports:
+      - "8090:8080"
+    deploy:
+      mode: replicated
+      replicas: 1
+
   front-app:
     build:
       context: ./../front-end
@@ -99,6 +110,18 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - ./db-data/mongo/:/data/db
+  
+  mariadb:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: imgdb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    volumes:
+      - ./db-data/mariadb/:/var/lib/mysql
+    ports:
+      - "9898:3306"
 
   mailhog:
     image: 'mailhog/mailhog:latest'
