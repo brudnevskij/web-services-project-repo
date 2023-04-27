@@ -1,0 +1,7 @@
+spyne
+sqlalchemy
+pymysql
+lxml
+flask
+zeep
+flasgger

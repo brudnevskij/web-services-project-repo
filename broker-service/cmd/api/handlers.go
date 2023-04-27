@@ -7,10 +7,12 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 	"net/rpc"
 	"time"
 
+	"github.com/hooklift/gowsdl/soap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -20,6 +22,7 @@ type RequestPayload struct {
 	Auth   AuthPayload `json:"auth,omitempty"`
 	Log    LogPayload  `json:"log,omitempty"`
 	Mail   MailPayload `json:"mail,omitempty"`
+	Soap   SoapPayload `json:"soap,omitempty"`
 }
 
 type MailPayload struct {
@@ -37,6 +40,10 @@ type AuthPayload struct {
 type LogPayload struct {
 	Name string `json:"name"`
 	Data string `json:"data"`
+}
+
+type SoapPayload struct {
+	Name string `json:"name"`
 }
 
 func (app *Config) Broker(w http.ResponseWriter, req *http.Request) {
@@ -66,6 +73,8 @@ func (app *Config) HandleSubmission(w http.ResponseWriter, r *http.Request) {
 
 	case "mail":
 		app.sendMail(w, requestPayload.Mail)
+	case "soap":
+		app.getCurrency(w, requestPayload.Soap)
 	default:
 		app.errorJSON(w, errors.New("unknown action"))
 	}
@@ -290,4 +299,25 @@ func (app *Config) LogViaGRPC(w http.ResponseWriter, r *http.Request) {
 	payload.Message = "logged"
 
 	app.writeJSON(w, http.StatusAccepted, payload)
+}
+
+func (app *Config) getCurrency(w http.ResponseWriter, entry SoapPayload) {
+	client := NewApplication(soap.NewClient("http://soap-service:8880"))
+
+	req := GetCurrency{
+		CurrencyName: "usd",
+	}
+	soapRes, err := client.GetCurrency(&req)
+
+	if err != nil {
+		log.Print(err)
+	}
+	log.Print(soapRes.GetCurrencyResult)
+
+	var res jsonResponse
+	res.Error = false
+	res.Message = "usd"
+	res.Data = soapRes.GetCurrencyResult
+
+	app.writeJSON(w, http.StatusOK, res)
 }

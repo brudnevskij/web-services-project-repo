@@ -6,6 +6,7 @@ require (
 	github.com/go-chi/chi/v5 v5.0.8 // indirect
 	github.com/go-chi/cors v1.2.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/hooklift/gowsdl v0.5.0 // indirect
 	github.com/rabbitmq/amqp091-go v1.7.0 // indirect
 	golang.org/x/net v0.5.0 // indirect
 	golang.org/x/sys v0.4.0 // indirect

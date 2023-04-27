@@ -8,7 +8,7 @@ services:
       dockerfile: ./broker-service.dockerfile
     restart: always
     ports:
-      - "8080:80"
+      - "8080:8080"
     deploy:
       mode: replicated
       replicas: 1
@@ -72,6 +72,17 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+
+  soap-service:
+    build:
+      context: ./../soap-service
+      dockerfile: ./soap-service.dockerfile
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+      - "9090:8880"
 
   front-app:
     build:
