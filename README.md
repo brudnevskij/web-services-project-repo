@@ -4,7 +4,8 @@ This project introduces a micro-service app, which uses different API formats.
 All micro-services are implemented to be runned in container, each micro-service dir has dockerfile.
 Project also includes build tools implemented in makefile script. It can be found in a project folder.
 During early stages of development docker-compose was used now project is orchestrated by k8s in one minikube kluster. All minikube yarn scripts can be found in project/k8s.
-
+### Architecture
+![alt text](https://github.com/brudnevskij/web-services-project-repo/blob/main/arch.svg "architechture")
 
 #### Micro-Services and languages of implementation
 - Broker/APIGateway, Go
